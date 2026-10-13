@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "gla",
+  "version": "${version}",
+  "name": "GLA",
+  "description": "OpenGL Additions for macOS",
+  "authors": ["rdh"],
+  "entrypoints": {
+    "preLaunch": ["dev.rdh.gla.GlaLoader"]
+  },
+  "license": "All Rights Reserved",
+  "environment": "client"
+}
