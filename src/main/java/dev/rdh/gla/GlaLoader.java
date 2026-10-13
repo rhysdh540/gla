@@ -2,6 +2,7 @@ package dev.rdh.gla;
 
 import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import org.lwjgl.system.Configuration;
+import org.lwjgl.system.Platform;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +14,10 @@ import java.nio.file.StandardCopyOption;
 public class GlaLoader implements PreLaunchEntrypoint {
 	@Override
 	public void onPreLaunch() {
+		if (Platform.get() != Platform.MACOSX) {
+			System.out.println("gla is only supported on macos");
+			return;
+		}
 
 		try {
 			InputStream is = GlaLoader.class.getClassLoader().getResourceAsStream("libgla.dylib");
