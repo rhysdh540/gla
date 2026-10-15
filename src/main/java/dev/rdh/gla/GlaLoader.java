@@ -26,6 +26,7 @@ public class GlaLoader implements PreLaunchEntrypoint {
 			}
 
 			Path path = Files.createTempFile("libgla", ".dylib");
+			path.toFile().deleteOnExit();
 			Files.copy(is, path, StandardCopyOption.REPLACE_EXISTING);
 
 			Configuration.OPENGL_LIBRARY_NAME.set(path.toAbsolutePath().toString());
