@@ -24,6 +24,8 @@ tasks.processResources {
     }
 }
 
+val stubs = sourceSets.create("stubs")
+
 repositories {
     mavenCentral()
     maven("https://maven.fabricmc.net")
@@ -32,6 +34,7 @@ repositories {
 dependencies {
     implementation("org.lwjgl:lwjgl:3.4.3")
     implementation("net.fabricmc:fabric-loader:0.19.5")
+    compileOnly(stubs.output)
 }
 
 tasks.processResources {
@@ -41,6 +44,9 @@ tasks.processResources {
     }
 }
 
-tasks.compileJava {
+tasks.withType<JavaCompile> {
     options.release = 8
+}
+tasks.jar {
+    manifest.attributes("TweakClass" to "dev.rdh.gla.GlaTweaker")
 }

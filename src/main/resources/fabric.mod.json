@@ -6,7 +6,7 @@
   "description": "OpenGL Additions for macOS",
   "authors": ["rdh"],
   "entrypoints": {
-    "preLaunch": ["dev.rdh.gla.GlaLoader"]
+    "preLaunch": ["dev.rdh.gla.GlaLoader::load"]
   },
   "license": "All Rights Reserved",
   "environment": "client"

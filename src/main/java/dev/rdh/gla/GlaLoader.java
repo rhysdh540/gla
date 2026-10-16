@@ -1,8 +1,6 @@
 package dev.rdh.gla;
 
-import net.fabricmc.loader.api.entrypoint.PreLaunchEntrypoint;
 import org.lwjgl.system.Configuration;
-import org.lwjgl.system.Platform;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,10 +9,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-public class GlaLoader implements PreLaunchEntrypoint {
-	@Override
-	public void onPreLaunch() {
-		if (Platform.get() != Platform.MACOSX) {
+public final class GlaLoader {
+	private static boolean loaded;
+
+	public static synchronized void load() {
+		if (loaded) return;
+		loaded = true;
+
+		if (!System.getProperty("os.name", "").startsWith("Mac")) {
 			System.out.println("gla is only supported on macos");
 			return;
 		}
@@ -31,7 +33,11 @@ public class GlaLoader implements PreLaunchEntrypoint {
 
 			String p = path.toAbsolutePath().toString();
 
-			Configuration.OPENGL_LIBRARY_NAME.set(p);
+			System.setProperty("org.lwjgl.opengl.libname", p);
+			try {
+				Configuration.OPENGL_LIBRARY_NAME.set(p);
+			} catch (NoClassDefFoundError ignore) {
+			}
 
 			if (!Boolean.getBoolean("gla.noPreload")) {
 				System.load(p);
