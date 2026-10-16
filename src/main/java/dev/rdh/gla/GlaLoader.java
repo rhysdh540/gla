@@ -29,7 +29,13 @@ public class GlaLoader implements PreLaunchEntrypoint {
 			path.toFile().deleteOnExit();
 			Files.copy(is, path, StandardCopyOption.REPLACE_EXISTING);
 
-			Configuration.OPENGL_LIBRARY_NAME.set(path.toAbsolutePath().toString());
+			String p = path.toAbsolutePath().toString();
+
+			Configuration.OPENGL_LIBRARY_NAME.set(p);
+
+			if (!Boolean.getBoolean("gla.noPreload")) {
+				System.load(p);
+			}
 		} catch (IOException e) {
 			throw new UncheckedIOException("failed to load gla", e);
 		}
