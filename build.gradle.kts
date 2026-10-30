@@ -1,5 +1,6 @@
 plugins {
     id("java")
+    id("me.modmuss50.mod-publish-plugin") version "2.2.1"
 }
 
 group = "dev.rdh"
@@ -49,4 +50,23 @@ tasks.withType<JavaCompile> {
 }
 tasks.jar {
     manifest.attributes("TweakClass" to "dev.rdh.gla.GlaTweaker")
+}
+
+publishMods {
+    file = tasks.jar.flatMap { it.archiveFile }
+    displayName = "GLA ${project.version}"
+    changelog = providers.gradleProperty("changelog")
+    type = ALPHA
+    modLoaders = listOf("fabric", "forge", "neoforge")
+    dryRun = providers.gradleProperty("publishDryRun").map(String::toBoolean).orElse(false)
+
+    modrinth {
+        accessToken = providers.environmentVariable("MODRINTH_PAT")
+        projectId = "I8Eiesvj"
+        environment = CLIENT_ONLY
+        minecraftVersionRange {
+            start = "1.17"
+            end = "latest"
+        }
+    }
 }
