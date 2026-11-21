@@ -34,6 +34,7 @@ repositories {
 
 dependencies {
     implementation("org.lwjgl:lwjgl:3.4.3")
+    implementation("org.lwjgl:lwjgl-opengl:3.4.3")
     implementation("net.fabricmc:fabric-loader:0.19.5")
     compileOnly(stubs.output)
 }

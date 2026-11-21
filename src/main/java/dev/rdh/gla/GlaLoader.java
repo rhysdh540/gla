@@ -1,5 +1,6 @@
 package dev.rdh.gla;
 
+import org.lwjgl.opengl.GL;
 import org.lwjgl.system.Configuration;
 
 import java.io.IOException;
@@ -50,6 +51,10 @@ public final class GlaLoader {
 			System.setProperty("org.lwjgl.opengl.libname", p);
 			try {
 				Configuration.OPENGL_LIBRARY_NAME.set(p);
+				if (GL.getFunctionProvider() != null) {
+					GL.destroy();
+					GL.create(p);
+				}
 			} catch (NoClassDefFoundError ignore) {
 			}
 		} catch (IOException e) {
