@@ -21,6 +21,11 @@ public final class GlaLoader {
 			return;
 		}
 
+		if (!"aarch64".equals(System.getProperty("os.arch"))) {
+			System.out.println("gla is only supported on m-series macs");
+			return;
+		}
+
 		try {
 			InputStream is = GlaLoader.class.getClassLoader().getResourceAsStream("libgla.dylib");
 			if (is == null) {
@@ -33,14 +38,19 @@ public final class GlaLoader {
 
 			String p = path.toAbsolutePath().toString();
 
+			if (!Boolean.getBoolean("gla.noPreload")) {
+				try {
+					System.load(p);
+				} catch (UnsatisfiedLinkError e) {
+					System.out.println("gla could not be loaded: " + e.getMessage());
+					return;
+				}
+			}
+
 			System.setProperty("org.lwjgl.opengl.libname", p);
 			try {
 				Configuration.OPENGL_LIBRARY_NAME.set(p);
 			} catch (NoClassDefFoundError ignore) {
-			}
-
-			if (!Boolean.getBoolean("gla.noPreload")) {
-				System.load(p);
 			}
 		} catch (IOException e) {
 			throw new UncheckedIOException("failed to load gla", e);
