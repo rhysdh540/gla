@@ -20,6 +20,7 @@ version = Regex("version = \"([^\"]+)\"").find(cargoContent)?.groupValues?.get(1
     ?: error("Failed to parse version from Cargo.toml")
 
 tasks.processResources {
+    inputs.file(glaPath.resolve("target/release/libgla.dylib"))
     from(glaPath.resolve("target/release")) {
         include("libgla.dylib")
     }
