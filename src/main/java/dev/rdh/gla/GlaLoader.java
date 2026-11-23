@@ -1,6 +1,5 @@
 package dev.rdh.gla;
 
-import org.lwjgl.opengl.GL;
 import org.lwjgl.system.Configuration;
 
 import java.io.IOException;
@@ -12,6 +11,7 @@ import java.nio.file.StandardCopyOption;
 
 public final class GlaLoader {
 	private static boolean loaded;
+	static String library;
 
 	public static synchronized void load() {
 		if (loaded) return;
@@ -51,10 +51,7 @@ public final class GlaLoader {
 			System.setProperty("org.lwjgl.opengl.libname", p);
 			try {
 				Configuration.OPENGL_LIBRARY_NAME.set(p);
-				if (GL.getFunctionProvider() != null) {
-					GL.destroy();
-					GL.create(p);
-				}
+				library = p;
 			} catch (NoClassDefFoundError ignore) {
 			}
 		} catch (IOException e) {
