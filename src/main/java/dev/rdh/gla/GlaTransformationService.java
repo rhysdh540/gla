@@ -13,8 +13,11 @@ public class GlaTransformationService implements ITransformationService {
 	public GlaTransformationService() {
 		GlaLoader.load();
 		if (GlaLoader.library != null && getClass().getClassLoader().getResource("net/minecraftforge/fml/loading/FMLLoader.class") != null) {
-			GL.destroy();
-			GL.create(GlaLoader.library);
+			try {
+				GL.destroy();
+				GL.create(GlaLoader.library);
+			} catch (NoClassDefFoundError ignore) {
+			}
 		}
 	}
 
